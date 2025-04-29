@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AnyPlace: Learning Generalized Object Placement for Robot Manipulation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title"> <b>AnyPlace</b>: Learning Generalized Object Placement for Robot Manipulation</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paper video. -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <div class="publication-video">
+          <video poster="./static/images/anyplace-video-preview.png" id="full-video" controls playsinline height="100%">
+            <source src="./static/videos/AnyPlace-corl-video-compressed.mp4"
+                    type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ Paper video. -->
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Abstract</h2>
+
+        <div class="content has-text-justified">
+          <img src="./static/images/main.png"
+                 class="interpolation-image"
+                 alt="Interpolate start reference image."/>
+          <p></p>
+          <p>
+            Achieving robust and generalizable object placement in robotic tasks is challenging due to the diversity of object geometries and placement configurations. 
+          </p>
+          <p>  
+            To address this, we propose AnyPlace, a two-stage method trained entirely on synthetic data, capable of predicting a wide range of feasible placement poses for real-world tasks. Our key insight is that by leveraging a Vision-Language Model (VLM) to
+             identify rough placement locations, we focus only on the relevant regions for local placement, which enables us to train the low-level placement-pose-prediction model to capture diverse placements efficiently. For training, we generate a fully synthetic 
+             dataset of randomly generated objects in different placement configurations (insertion, stacking, hanging) and train local placement-prediction models. 
+          </p>
+          <p>
+            We conduct extensive evaluations in simulation, demonstrating that our method outperforms baselines in terms of success rate, coverage of possible placement modes, and precision. In real-world experiments, we show how our approach directly transfers models
+             trained purely on synthetic data to the real world, where it successfully performs placements in scenarios where other models struggle -- such as with varying object geometries, diverse placement modes, and achieving high precision for fine placement.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">AnyPlace Prediction Pipeline</h2>
+        <div class="content has-text-justified">
+          <img src="./static/images/arch.png"
+              class="interpolation-image"
+              alt="Interpolate start reference image.">
+          <p></p>
+          <p>
+            Our AnyPlace pipeline consists of two stages: high-level placement position prediction and low-level pose prediction.
+            For high-level placement position prediction, given an input language description and an RGBD image, we leverage Molmo and 
+            SAM-2 to segment objects of interest. Next, we prompt Molmo again to propose possible placement locations. 
+            Using camera parameters, we reproject the depth map into 3D and crop the region of interest centered on the proposed placement location. 
+            Full point clouds of the objects to be placed, along with the cropped regions of the placement locations, are then fed into our low-level pose prediction model to output 
+            precise relative transformations for object placement.
+          </p>
+        </div>
+      </div>
+      
+    </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Real Robot Experiments</h2>
+        <div class="content has-text-justified">
+          <p>For real robot experiments, we train our models using our fully synthetic dataset and test them directly in real-world scenarios in a zero-shot manner. 
+            The results show that our model can accurately predict placement poses for various configurations and objects, demonstrating the robustness and generalization capabilities of our proposed method.
+          </p>
+        </div>
+
+        <h2 class="title is-5">Lid on Pot, Pot on Stove:</h2>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column  has-text-centered">
+            <video autoplay controls muted loop playsinline width="95%">
+              <source src="static/videos/pot_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <h2 class="title is-5">Plate on Rack:</h2>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column  has-text-centered">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/plate_on_rack_1_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column  has-text-centered">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/plate_on_rack_2_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <h2 class="title is-5">Peg in Hole:</h2>
+        <div class="columns is-vcentered interpolation-panel">
+          <div class="column  has-text-centered">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/peg_in_hole_1_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column  has-text-centered">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/peg_in_hole_2_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <!-- Observing Failures. -->
+            <div class="column">
+              <div class="content">
+                <h2 class="title is-5">Towel Hanging</h2>
+                <video id="real-pyramid-fail" autoplay controls muted loop playsinline height="100%">
+                  <source src="static/videos/4_towel.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+    
+            <div class="column">
+              <h2 class="title is-5">Scissors Hanging</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                  <video id="real-pyramid-success" autoplay controls muted loop playsinline height="100%">
+                    <source src="static/videos/4_sciss.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+            </div>
+    
+            <div class="column">
+              <div class="content">
+                <h2 class="title is-5">Cup Hanging</h2>
+                <video id="real-pyramid-fail" autoplay controls muted loop playsinline height="100%">
+                  <source src="static/videos/cup_on_rack_5x.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+    
+          </div>
+        </div>
+    
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <!-- Observing Failures. -->
+            <div class="column">
+              <div class="content">
+                <h2 class="title is-5">Ring Hanging on Rack</h2>
+                <video id="real-pyramid-fail" autoplay controls muted loop playsinline height="100%">
+                  <source src="static/videos/4_ring_stack.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+    
+            <div class="column">
+              <h2 class="title is-5">Ring Hanging on Finger</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                  <video id="real-pyramid-success" autoplay controls muted loop playsinline height="100%">
+                    <source src="static/videos/4_ring_hand.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <!-- Observing Failures. -->
+            <div class="column">
+              <div class="content">
+                <h2 class="title is-5">Funnel Stacking on Ring Clamp</h2>
+                <video id="real-pyramid-fail" autoplay controls muted loop playsinline height="100%">
+                  <source src="static/videos/4_funnel.mp4" type="video/mp4">
+                </video>
+              </div>
+            </div>
+    
+            <div class="column">
+              <h2 class="title is-5">Battery Stacking on Stand</h2>
+              <div class="columns is-centered">
+                <div class="column content">
+                  <video id="real-pyramid-success" autoplay controls muted loop playsinline height="100%">
+                    <source src="static/videos/battery_stack.mp4" type="video/mp4">
+                  </video>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="title is-5">Stacking Rings:</h2>
+        <div class="columns is-vcentered interpolation-panel " style="gap: 10px;">
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/stack_ring_1_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/stack_ring_2_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/stack_ring_3_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        
+        <h2 class="title is-5">Bottle on Cabinet:</h2>
+        <div class="columns is-vcentered interpolation-panel " style="gap: 10px;">
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/bottle_low_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/bottle_middle_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="column has-text-centered" style="margin: 1; padding: 2px;">
+            <video autoplay controls muted loop playsinline width="100%">
+              <source src="static/videos/bottle_top_5x.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+    <h2 class="title is-5">Vial in Vial Plate:</h2>
+    <div id="results-carousel" class="carousel results-carousel">
+      <div class="item item-stack3">
+        <video poster="" id="stack3" autoplay controls muted loop playsinline height="100%">
+          <source src="static/videos/vial_in_rack_1_5x.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-stack4">
+        <video poster="" id="stack4" autoplay controls muted loop playsinline height="100%">
+          <source src="static/videos/vial_in_rack_2_5x.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-stack6">
+        <video poster="" id="stack6" autoplay controls muted loop playsinline height="100%">
+          <source src="static/videos/vial_in_rack_3_5x.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-line">
+        <video poster="" id="line" autoplay controls muted loop playsinline height="100%">
+          <source src="static/videos/vial_in_rack_4_5x.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="item item-line">
+        <video poster="" id="line" autoplay controls muted loop playsinline height="100%">
+          <source src="static/videos/vial_in_rack_5_5x.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns content has-text-centered">
+      <div class="column is-full-width">
+        <p>
+          Website template based on <a href="https://github.com/nerfies/nerfies.github.io"> Nerfies </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
